@@ -1,5 +1,5 @@
 """ Plugin entry point for helga """
-import arrow, json, requests
+import json, requests
 from datetime import datetime
 from dateutil.parser import parse
 from helga import log
@@ -46,8 +46,9 @@ def meta_user(query):
 
 def time_since(time_utc):
     """ Return time since the given utc time """
-    delta = arrow.utcnow() - arrow.get(time_utc)
-    return ':'.join(str(delta).split(':')[:2]) + ' ago'
+    modified = datetime.strptime(time_utc,'%Y-%m-%dT%H:%M:%SZ')
+    delta = datetime.utcnow() - modified
+    return str(delta) + ' ago'
 
 def execute_request(query):
     """ Invoke API to retrieve json hopefully representing request """
