@@ -1,11 +1,13 @@
 """ Plugin entry point for helga """
-import json, requests
+import json
+import requests
 from datetime import datetime
-from dateutil.parser import parse
 from helga import log
 from helga.plugins import match
 
+
 logger = log.getLogger(__name__)
+
 
 @match(r'github\.com/[\S]*')
 def github_meta(client, channel, nick, message, match):
@@ -23,12 +25,14 @@ def github_meta(client, channel, nick, message, match):
         logger.warn('Github meta exception for ' + query + ":" + e)
     return ''
 
+
 def meta_repo(query):
     """ Return meta information about a repo """
     meta = execute_request('repos/' + query)
     last_update = time_since(meta['updated_at'])
     template = 'Name: {}, description: {}, last update: {}'
     return template.format(meta['name'], meta['description'], last_update)
+
 
 def meta_issue(query):
     """ Return meta information about an issue """
@@ -37,6 +41,7 @@ def meta_issue(query):
     template = 'Title: {}, state: {}, last update: {}'
     return template.format(meta['title'], meta['state'], last_update)
 
+
 def meta_user(query):
     """ Return meta information about a user """
     meta = execute_request('users/' + query)
@@ -44,11 +49,13 @@ def meta_user(query):
     return template.format(meta['name'], meta['company'], meta['blog'],
                            meta['email'], meta['public_repos'])
 
+
 def time_since(time_utc):
     """ Return time since the given utc time """
-    modified = datetime.strptime(time_utc,'%Y-%m-%dT%H:%M:%SZ')
+    modified = datetime.strptime(time_utc, '%Y-%m-%dT%H:%M:%SZ')
     delta = datetime.utcnow() - modified
     return str(delta) + ' ago'
+
 
 def execute_request(query):
     """ Invoke API to retrieve json hopefully representing request """

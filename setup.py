@@ -1,6 +1,6 @@
-from parse_requirements_not_suckily import parse_requirements
 from setuptools import setup, find_packages
 from helga_github_meta import __version__ as version
+
 
 setup(
     name='helga-github-meta',
@@ -23,8 +23,8 @@ setup(
     include_package_data=True,
     py_modules=['helga_github_meta.plugin'],
     zip_safe=True,
-    install_requires=parse_requirements(),
-    test_suite='',
+    install_requires=['helga', 'requests'],
+    test_suite='tests',
     entry_points=dict(
         helga_plugins=[
             'github-meta = helga_github_meta.plugin:github_meta',
